@@ -31,7 +31,7 @@
     ```
 2. 集成到自己的项目中：
     ```shell
-    cargo add kokoro
+    cargo add kokoro-tts
     ```
     参考[examples](examples)文件夹中的示例代码进行开发。
 
