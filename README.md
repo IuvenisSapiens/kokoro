@@ -14,7 +14,8 @@
 
 - Rust编程语言
 - Tokio异步运行时
-- Rodio音频播放库（可选）
+- Rodio音频处理和播放的库（可选）
+- 下载模型资源[这里](https://github.com/mzdk100/kokoro/releases/tag/V1.0)
 
 ## 特点
 - 跨平台，可以轻松在Windows、Mac OS上构建，也可以轻松交叉编译到安卓和iOS。

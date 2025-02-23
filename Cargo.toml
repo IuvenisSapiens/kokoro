@@ -1,7 +1,12 @@
 [package]
 name = "kokoro"
+description = "用于Rust的轻量级AI离线语音合成器（Kokoro TTS），可轻松交叉编译到移动端"
 version = "0.1.0"
 edition = "2021"
+keywords = ["TTS", "Offline", "Lite", "AI", "Synthesizer"]
+license = "Apache-2.0"
+repository = "https://github.com/mzdk100/kokoro.git"
+readme = "README.md"
 
 [dependencies]
 bincode = "2.0.0-rc.3"

@@ -4,6 +4,44 @@ use ndarray::Array;
 use ort::inputs;
 use std::time::{Duration, SystemTime};
 
+/// 语音合成函数
+///
+/// 该函数接受语音名称、文本内容和速度参数，并返回合成后的音频数据和合成所花费的时间。
+///
+/// # 参数
+///
+/// * `voice_name` - 语音名称，用于选择要合成的语音。
+/// * `text` - 要合成的文本内容。
+/// * `speed` - 合成速度，用于调整合成音频的速度。
+///
+/// # 返回值
+///
+/// 返回一个包含合成音频数据和合成所花费时间的元组。
+///
+/// # 错误处理
+///
+/// 如果合成过程中出现错误，将返回一个`KokoroError`类型的错误。
+///
+/// # 示例
+///
+/// ```rust
+/// use kokoro::synth;
+///
+/// #[tokio::main]
+/// async fn main() {
+///     if let Ok((audio, took)) = synth("am_puck", "你好，我们是一群追逐梦想的人。", 1.0).await {
+///         println!("Synth took: {:?}", took);
+///     }
+/// }
+/// ```
+///
+/// # 注意
+///
+/// 请确保在运行此函数之前已经正确加载了模型和语音数据。
+///
+/// # 错误处理
+///
+/// 如果合成过程中出现错误，将返回一个`KokoroError`类型的错误。
 pub async fn synth<S: AsRef<str>>(
     voice_name: S,
     text: S,

@@ -118,10 +118,9 @@ pub fn arpa_to_ipa(arpa: &str) -> Result<String, regex::Error> {
     }
 
     // 获取IPA映射
-    let phoneme = ARPA_IPA_MAP.get(&caps[1]).map_or_else(
-        || letters_to_ipa(arpa),
-        |i| i.to_string(),
-    );
+    let phoneme = ARPA_IPA_MAP
+        .get(&caps[1])
+        .map_or_else(|| letters_to_ipa(arpa), |i| i.to_string());
 
     let mut result = String::with_capacity(arpa.len() * 2);
     // 添加重音标记（支持三级重音）
@@ -145,5 +144,4 @@ pub fn letters_to_ipa(letters: &str) -> String {
         }
     }
     res
-
 }
