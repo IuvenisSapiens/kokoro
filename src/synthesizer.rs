@@ -25,7 +25,7 @@ use std::time::{Duration, SystemTime};
 /// # 示例
 ///
 /// ```rust
-/// use kokoro::synth;
+/// use kokoro_tts::synth;
 ///
 /// #[tokio::main]
 /// async fn main() {

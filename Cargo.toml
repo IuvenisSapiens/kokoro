@@ -1,5 +1,5 @@
 [package]
-name = "kokoro"
+name = "kokoro-tts"
 description = "用于Rust的轻量级AI离线语音合成器（Kokoro TTS），可轻松交叉编译到移动端"
 version = "0.1.0"
 edition = "2021"

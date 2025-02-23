@@ -63,7 +63,7 @@ impl<S: Clone> SynthSink<S> {
     /// # 示例
     ///
     /// ```rust
-    /// use kokoro::start_synth_session;
+    /// use kokoro_tts::start_synth_session;
     ///
     /// #[tokio::main]
     /// async fn main() {
@@ -87,7 +87,7 @@ impl<S: Clone> SynthSink<S> {
     /// # 示例
     ///
     /// ```rust
-    /// use kokoro::start_synth_session;
+    /// use kokoro_tts::start_synth_session;
     ///
     /// #[tokio::main]
     /// async fn main() {
@@ -115,7 +115,7 @@ impl<S: Clone> SynthSink<S> {
     /// # 示例
     ///
     /// ```rust
-    /// use kokoro::start_synth_session;
+    /// use kokoro_tts::start_synth_session;
     ///
     /// #[tokio::main]
     /// async fn main() {
@@ -174,7 +174,7 @@ impl<S> Sink<(S, S, f32)> for SynthSink<S> {
 /// # 示例
 ///
 /// ```rust
-/// use kokoro::start_synth_session;
+/// use kokoro_tts::start_synth_session;
 /// use futures::StreamExt;
 ///
 /// #[tokio::main]

@@ -28,7 +28,7 @@ static MODEL: LazyLock<Mutex<Option<Arc<Session>>>> = LazyLock::new(Default::def
 /// # 示例
 ///
 /// ```rust
-/// use kokoro::load;
+/// use kokoro_tts::load;
 ///
 /// #[tokio::main]
 /// async fn main() {
@@ -71,7 +71,7 @@ pub async fn load<P: AsRef<Path>>(model_path: P, voices_path: P) -> Result<(), K
 /// # 示例
 ///
 /// ```rust
-/// use kokoro::get_voice_names;
+/// use kokoro_tts::get_voice_names;
 ///
 /// #[tokio::main]
 /// async fn main() {
@@ -103,7 +103,7 @@ pub async fn get_voice_names() -> Result<Vec<String>, KokoroError> {
 /// # 示例
 ///
 /// ```rust
-/// use kokoro::unload;
+/// use kokoro_tts::unload;
 ///
 /// #[tokio::main]
 /// async fn main() {

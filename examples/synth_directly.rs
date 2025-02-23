@@ -1,4 +1,4 @@
-use kokoro::{get_voice_names, load, synth};
+use kokoro_tts::{get_voice_names, load, synth};
 use rodio::{buffer::SamplesBuffer, OutputStream, Sink};
 
 #[tokio::main]

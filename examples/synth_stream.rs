@@ -1,5 +1,5 @@
 use futures::StreamExt;
-use kokoro::{get_voice_names, load, start_synth_session};
+use kokoro_tts::{get_voice_names, load, start_synth_session};
 use rodio::{buffer::SamplesBuffer, OutputStream, Sink};
 use std::sync::Arc;
 use tokio::time::{sleep, Duration};
