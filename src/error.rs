@@ -1,0 +1,80 @@
+use crate::G2PError;
+use bincode::error::DecodeError;
+use ndarray::ShapeError;
+use ort::Error as OrtError;
+use std::{
+    error::Error,
+    fmt::{Debug, Display, Formatter, Result as FmtResult},
+    io::Error as IoError,
+    time::{Duration, SystemTimeError},
+};
+
+#[derive(Debug)]
+pub enum KokoroError {
+    Decode(DecodeError),
+    G2P(G2PError),
+    Io(IoError),
+    LoadFailed,
+    NotLoaded,
+    Ort(OrtError),
+    Send(String),
+    Shape(ShapeError),
+    SynthFailed(Duration),
+    SystemTime(SystemTimeError),
+}
+
+impl Display for KokoroError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
+        write!(f, "KokoroError: ")?;
+        match self {
+            Self::Decode(e) => Display::fmt(e, f),
+            Self::G2P(e) => Display::fmt(e, f),
+            Self::Io(e) => Display::fmt(e, f),
+            Self::LoadFailed => write!(f, "LoadFailed"),
+            Self::NotLoaded => write!(f, "NotLoaded"),
+            Self::Ort(e) => Display::fmt(e, f),
+            Self::Send(e) => Display::fmt(e, f),
+            Self::Shape(e) => Display::fmt(e, f),
+            Self::SynthFailed(d) => write!(f, "SynthFailed: It took {:?}", d),
+            Self::SystemTime(e) => Display::fmt(e, f),
+        }
+    }
+}
+
+impl Error for KokoroError {}
+
+impl From<IoError> for KokoroError {
+    fn from(value: IoError) -> Self {
+        Self::Io(value)
+    }
+}
+
+impl From<DecodeError> for KokoroError {
+    fn from(value: DecodeError) -> Self {
+        Self::Decode(value)
+    }
+}
+
+impl From<OrtError> for KokoroError {
+    fn from(value: OrtError) -> Self {
+        Self::Ort(value)
+    }
+}
+
+impl From<G2PError> for KokoroError {
+    fn from(value: G2PError) -> Self {
+        Self::G2P(value)
+    }
+}
+
+impl From<ShapeError> for KokoroError {
+    fn from(value: ShapeError) -> Self {
+        Self::Shape(value)
+    }
+}
+
+impl From<SystemTimeError> for KokoroError {
+    fn from(value: SystemTimeError) -> Self {
+        Self::SystemTime(value)
+    }
+}
