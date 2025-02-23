@@ -1,5 +1,5 @@
 /// 文本到国际音标的转换
-use crate::transcription::{arpa_to_ipa, letters_to_ipa, pinyin_to_ipa, PinyinError};
+use crate::transcription::{PinyinError, arpa_to_ipa, letters_to_ipa, pinyin_to_ipa};
 use chinese_number::{ChineseCase, ChineseCountMethod, ChineseVariant, NumberToChinese};
 use cmudict_fast::{Cmudict, Error as CmudictError};
 use pinyin::ToPinyin;

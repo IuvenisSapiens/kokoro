@@ -1,5 +1,5 @@
 use kokoro_tts::{get_voice_names, load, synth};
-use rodio::{buffer::SamplesBuffer, OutputStream, Sink};
+use rodio::{OutputStream, Sink, buffer::SamplesBuffer};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

@@ -1,4 +1,4 @@
-use crate::{synth, KokoroError};
+use crate::{KokoroError, synth};
 use futures::{Sink, SinkExt, Stream};
 use pin_project::pin_project;
 use std::{
@@ -6,7 +6,7 @@ use std::{
     task::{Context, Poll},
     time::Duration,
 };
-use tokio::sync::mpsc::{unbounded_channel, UnboundedReceiver, UnboundedSender};
+use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel};
 
 struct Request<S> {
     voice_name: S,

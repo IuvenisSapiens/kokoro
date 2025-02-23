@@ -177,7 +177,11 @@ fn convert_uv(pinyin: &str) -> String {
     let chars = pinyin.chars().collect::<Vec<_>>();
 
     match chars.as_slice() {
-        [c @ ('j' | 'q' | 'x'), tone @ ('u' | 'ū' | 'ú' | 'ǔ' | 'ù'), rest @ ..] => {
+        [
+            c @ ('j' | 'q' | 'x'),
+            tone @ ('u' | 'ū' | 'ú' | 'ǔ' | 'ù'),
+            rest @ ..,
+        ] => {
             let new_tone = match tone {
                 'u' => 'ü',
                 'ū' => 'ǖ',

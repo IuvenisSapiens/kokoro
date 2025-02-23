@@ -1,4 +1,4 @@
-use crate::{g2p, get_model, get_token_ids, get_voice, KokoroError};
+use crate::{KokoroError, g2p, get_model, get_token_ids, get_voice};
 
 use ndarray::Array;
 use ort::inputs;

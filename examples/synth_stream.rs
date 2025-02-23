@@ -1,8 +1,8 @@
 use futures::StreamExt;
 use kokoro_tts::{get_voice_names, load, start_synth_session};
-use rodio::{buffer::SamplesBuffer, OutputStream, Sink};
+use rodio::{OutputStream, Sink, buffer::SamplesBuffer};
 use std::sync::Arc;
-use tokio::time::{sleep, Duration};
+use tokio::time::{Duration, sleep};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {

@@ -126,10 +126,13 @@ pub fn get_token_ids(phonemes: &str) -> Vec<i64> {
     tokens.push(0);
 
     for i in phonemes.chars() {
-        if let Some(t) = VOCAB.get(&i) {
-            tokens.push(*t as _);
-        } else {
-            warn!("Unknown phone {}, skipped.", i);
+        match VOCAB.get(&i) {
+            Some(t) => {
+                tokens.push(*t as _);
+            }
+            _ => {
+                warn!("Unknown phone {}, skipped.", i);
+            }
         }
     }
 
