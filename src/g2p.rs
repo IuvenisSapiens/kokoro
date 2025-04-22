@@ -1,42 +1,41 @@
 /// 文本到国际音标的转换
-use crate::transcription::{PinyinError, arpa_to_ipa, letters_to_ipa, pinyin_to_ipa};
+use super::{PinyinError, pinyin_to_ipa};
 use chinese_number::{ChineseCase, ChineseCountMethod, ChineseVariant, NumberToChinese};
+#[cfg(feature = "use-cmudict")]
 use cmudict_fast::{Cmudict, Error as CmudictError};
 use pinyin::ToPinyin;
 use regex::{Captures, Error as RegexError, Regex};
 use std::{
     error::Error,
     fmt::{Display, Formatter, Result as FmtResult},
-    io::{Error as IoError, ErrorKind},
-    sync::LazyLock,
 };
-
-fn get_cmudict<'a>() -> Result<&'a Cmudict, CmudictError> {
-    static CMUDICT: LazyLock<Result<Cmudict, CmudictError>> =
-        LazyLock::new(|| Cmudict::new("cmudict.dict"));
-    CMUDICT.as_ref().map_err(|i| match i {
-        CmudictError::IoErr(e) => CmudictError::IoErr(IoError::new(ErrorKind::Other, e)),
-        CmudictError::InvalidLine(e) => CmudictError::InvalidLine(*e),
-        CmudictError::RuleParseError(e) => CmudictError::RuleParseError(e.clone()),
-    })
-}
 
 #[derive(Debug)]
 pub enum G2PError {
+    #[cfg(feature = "use-cmudict")]
     CmudictError(CmudictError),
     EnptyData,
+    #[cfg(not(feature = "use-cmudict"))]
+    Nul(std::ffi::NulError),
     Pinyin(PinyinError),
     Regex(RegexError),
+    #[cfg(not(feature = "use-cmudict"))]
+    Utf8(std::str::Utf8Error),
 }
 
 impl Display for G2PError {
     fn fmt(&self, f: &mut Formatter<'_>) -> FmtResult {
         write!(f, "G2PError: ")?;
         match self {
+            #[cfg(feature = "use-cmudict")]
             Self::CmudictError(e) => Display::fmt(e, f),
             Self::EnptyData => Display::fmt("EmptyData", f),
+            #[cfg(not(feature = "use-cmudict"))]
+            Self::Nul(e) => Display::fmt(e, f),
             Self::Pinyin(e) => Display::fmt(e, f),
             Self::Regex(e) => Display::fmt(e, f),
+            #[cfg(not(feature = "use-cmudict"))]
+            Self::Utf8(e) => Display::fmt(e, f),
         }
     }
 }
@@ -55,9 +54,24 @@ impl From<RegexError> for G2PError {
     }
 }
 
+#[cfg(feature = "use-cmudict")]
 impl From<CmudictError> for G2PError {
     fn from(value: CmudictError) -> Self {
         Self::CmudictError(value)
+    }
+}
+
+#[cfg(not(feature = "use-cmudict"))]
+impl From<std::ffi::NulError> for G2PError {
+    fn from(value: std::ffi::NulError) -> Self {
+        Self::Nul(value)
+    }
+}
+
+#[cfg(not(feature = "use-cmudict"))]
+impl From<std::str::Utf8Error> for G2PError {
+    fn from(value: std::str::Utf8Error) -> Self {
+        Self::Utf8(value)
     }
 }
 
@@ -140,7 +154,25 @@ fn word2ipa_zh(word: &str) -> Result<String, G2PError> {
     Ok(result)
 }
 
+#[cfg(feature = "use-cmudict")]
 fn word2ipa_en(word: &str) -> Result<String, G2PError> {
+    use super::{arpa_to_ipa, letters_to_ipa};
+    use std::{
+        io::{Error as IoError, ErrorKind},
+        str::FromStr,
+        sync::LazyLock,
+    };
+
+    fn get_cmudict<'a>() -> Result<&'a Cmudict, CmudictError> {
+        static CMUDICT: LazyLock<Result<Cmudict, CmudictError>> =
+            LazyLock::new(|| Cmudict::from_str(include_str!("../dict/cmudict.dict")));
+        CMUDICT.as_ref().map_err(|i| match i {
+            CmudictError::IoErr(e) => CmudictError::IoErr(IoError::new(ErrorKind::Other, e)),
+            CmudictError::InvalidLine(e) => CmudictError::InvalidLine(*e),
+            CmudictError::RuleParseError(e) => CmudictError::RuleParseError(e.clone()),
+        })
+    }
+
     let Some(rules) = get_cmudict()?.get(word) else {
         return Ok(letters_to_ipa(word));
     };
@@ -154,6 +186,31 @@ fn word2ipa_en(word: &str) -> Result<String, G2PError> {
         .map(|i| arpa_to_ipa(&i.to_string()).unwrap_or_default())
         .collect::<String>();
     Ok(result)
+}
+
+#[cfg(not(feature = "use-cmudict"))]
+fn word2ipa_en(word: &str) -> Result<String, G2PError> {
+    use std::{
+        ffi::{CStr, CString, c_char},
+        sync::Once,
+    };
+
+    unsafe extern "C" {
+        fn TextToPhonemes(text: *const c_char) -> *const ::std::os::raw::c_char;
+        fn Initialize(data_dictlist: *const c_char);
+    }
+
+    unsafe {
+        static INIT: Once = Once::new();
+        INIT.call_once(|| {
+            static DATA: &[u8] = include_bytes!("../dict/espeak.dict");
+            Initialize(DATA.as_ptr() as _);
+        });
+
+        let word = CString::new(word.to_lowercase())?.into_raw() as *const c_char;
+        let res = TextToPhonemes(word);
+        Ok(CStr::from_ptr(res).to_str()?.to_string())
+    }
 }
 
 fn to_half_shape(text: &str) -> String {
@@ -262,4 +319,24 @@ pub fn g2p(text: &str) -> Result<String, G2PError> {
     }
 
     Ok(result.trim().to_string())
+}
+
+#[cfg(test)]
+mod tests {
+    #[cfg(not(feature = "use-cmudict"))]
+    #[test]
+    fn test_word2ipa_en() -> Result<(), super::G2PError> {
+        use super::word2ipa_en;
+
+        // println!("{:?}", espeak_rs::text_to_phonemes("days", "en", None, true, false));
+        assert_eq!("kjˌuːkjˈuː", word2ipa_en("qq")?);
+        assert_eq!("həlˈəʊ", word2ipa_en("hello")?);
+        assert_eq!("wˈɜːld", word2ipa_en("world")?);
+        assert_eq!("ˈapəl", word2ipa_en("apple")?);
+        assert_eq!("tʃˈɪldɹɛn", word2ipa_en("children")?);
+        assert_eq!("ˈaʊə", word2ipa_en("hour")?);
+        assert_eq!("dˈeɪz", word2ipa_en("days")?);
+
+        Ok(())
+    }
 }

@@ -11,7 +11,7 @@ async fn main() -> anyhow::Result<()> {
 
     let (audio, took) = synth(
         "am_puck",
-        "你好，我们是一群追逐梦想的人。我正在使用qq。",
+        "Hello, world!你好，我们是一群追逐梦想的人。我正在使用qq。",
         1.0,
     )
     .await?;
