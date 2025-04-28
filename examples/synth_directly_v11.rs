@@ -1,20 +1,15 @@
-use kokoro_tts::{get_voice_names, load, synth};
+use kokoro_tts::{KokoroTts, Voice};
 use rodio::{OutputStream, Sink, buffer::SamplesBuffer};
 
 #[tokio::main]
 async fn main() -> anyhow::Result<()> {
-    load("kokoro-v1.0.int8.onnx", "voices.bin").await?;
-    let voice_names = get_voice_names().await?;
-    for i in voice_names.iter() {
-        println!("{i}");
-    }
-
-    let (audio, took) = synth(
-        "am_puck",
-        "Hello, world!你好，我们是一群追逐梦想的人。我正在使用qq。",
-        1.0,
-    )
-    .await?;
+    let tts = KokoroTts::new("kokoro-v1.1-zh.onnx", "voices-v1.1-zh.bin").await?;
+    let (audio, took) = tts
+        .synth(
+            "Hello, world!你好，我们是一群追逐梦想的人。我正在使用qq。忽略",
+            Voice::Zm045(1),
+        )
+        .await?;
     println!("Synth took: {:?}", took);
     play_sound(&audio);
     Ok(())

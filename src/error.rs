@@ -14,13 +14,14 @@ pub enum KokoroError {
     Decode(DecodeError),
     G2P(G2PError),
     Io(IoError),
-    LoadFailed,
-    NotLoaded,
+    ModelReleased,
     Ort(OrtError),
     Send(String),
     Shape(ShapeError),
     SynthFailed(Duration),
     SystemTime(SystemTimeError),
+    VoiceNotFound(String),
+    VoiceVersionInvalid(String),
 }
 
 impl Display for KokoroError {
@@ -30,13 +31,14 @@ impl Display for KokoroError {
             Self::Decode(e) => Display::fmt(e, f),
             Self::G2P(e) => Display::fmt(e, f),
             Self::Io(e) => Display::fmt(e, f),
-            Self::LoadFailed => write!(f, "LoadFailed"),
-            Self::NotLoaded => write!(f, "NotLoaded"),
             Self::Ort(e) => Display::fmt(e, f),
+            Self::ModelReleased => write!(f, "ModelReleased"),
             Self::Send(e) => Display::fmt(e, f),
             Self::Shape(e) => Display::fmt(e, f),
             Self::SynthFailed(d) => write!(f, "SynthFailed: It took {:?}", d),
             Self::SystemTime(e) => Display::fmt(e, f),
+            Self::VoiceNotFound(name) => write!(f, "VoiceNotFound({})", name),
+            Self::VoiceVersionInvalid(msg) => write!(f, "VoiceVersionInvalid({})", msg),
         }
     }
 }

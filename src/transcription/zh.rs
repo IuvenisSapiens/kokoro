@@ -147,7 +147,7 @@ static TONE_MAPPING: LazyLock<HashMap<u8, &'static str>> = LazyLock::new(|| {
     map
 });
 
-fn split_tone(pinyin: &str) -> (&str, u8) {
+pub(crate) fn split_tone(pinyin: &str) -> (&str, u8) {
     if let Some(t) = pinyin
         .chars()
         .last()
@@ -234,7 +234,7 @@ fn convert_uei(pinyin: &str) -> String {
 /// i行的韵母，前面没有声母的时候，写成yi(衣)，ya(呀)，ye(耶)，yao(腰)，you(忧)，yan(烟)，yin(因)，yang(央)，ying(英)，yong(雍)。
 /// u行的韵母，前面没有声母的时候，写成wu(乌)，wa(蛙)，wo(窝)，wai(歪)，wei(威)，wan(弯)，wen(温)，wang(汪)，weng(翁)。
 /// ü行的韵母，前面没有声母的时候，写成yu(迂)，yue(约)，yuan(冤)，yun(晕)；ü上两点省略。"""
-fn convert_zero_consonant(pinyin: &str) -> String {
+pub(crate) fn convert_zero_consonant(pinyin: &str) -> String {
     let mut buffer = String::with_capacity(pinyin.len() + 2);
     let chars: Vec<char> = pinyin.chars().collect();
 
@@ -285,7 +285,7 @@ fn convert_zero_consonant(pinyin: &str) -> String {
     }
 }
 
-fn split_initial(pinyin: &str) -> (&'static str, &str) {
+pub(crate) fn split_initial(pinyin: &str) -> (&'static str, &str) {
     for &initial in &INITIALS {
         if pinyin.starts_with(initial) {
             return (initial, &pinyin[initial.len()..]);

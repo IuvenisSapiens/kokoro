@@ -1,17 +1,18 @@
-use crate::{KokoroError, synth};
-use futures::{Sink, SinkExt, Stream};
-use pin_project::pin_project;
-use std::{
-    pin::Pin,
-    task::{Context, Poll},
-    time::Duration,
+use {
+    crate::{KokoroError, Voice},
+    futures::{Sink, SinkExt, Stream},
+    pin_project::pin_project,
+    std::{
+        pin::Pin,
+        task::{Context, Poll},
+        time::Duration,
+    },
+    tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel},
 };
-use tokio::sync::mpsc::{UnboundedReceiver, UnboundedSender, unbounded_channel};
 
 struct Request<S> {
-    voice_name: S,
+    voice: Voice,
     text: S,
-    speed: f32,
 }
 
 struct Response {
@@ -47,11 +48,10 @@ impl Stream for SynthStream {
 #[pin_project]
 pub struct SynthSink<S> {
     tx: UnboundedSender<Request<S>>,
-    voice_name: S,
-    speed: f32,
+    voice: Voice,
 }
 
-impl<S: Clone> SynthSink<S> {
+impl<S> SynthSink<S> {
     /// 设置语音名称
     ///
     /// 该方法用于设置要合成的语音名称。
@@ -63,41 +63,22 @@ impl<S: Clone> SynthSink<S> {
     /// # 示例
     ///
     /// ```rust
-    /// use kokoro_tts::start_synth_session;
+    /// use kokoro_tts::{KokoroTts, Voice};
     ///
     /// #[tokio::main]
     /// async fn main() {
-    ///     let (mut sink, _) = start_synth_session("zf_xiaoxiao", 1.1);
-    ///     sink.set_voice("zm_yunxi");
+    ///     let Ok(tts) = KokoroTts::new("../kokoro-v1.0.int8.onnx", "../voices.bin").await else {
+    ///         return;
+    ///     };
+    ///     // speed: 1.0
+    ///     let (mut sink, _) = tts.stream::<&str>(Voice::ZfXiaoxiao(1.0));
+    ///     // speed: 1.8
+    ///     sink.set_voice(Voice::ZmYunxi(1.8));
     /// }
     /// ```
     ///
-    pub fn set_voice(&mut self, voice_name: S) {
-        self.voice_name = voice_name
-    }
-
-    /// 设置合成速度
-    ///
-    /// 该方法用于设置合成速度，用于调整合成音频的速度。
-    ///
-    /// # 参数
-    ///
-    /// * `speed` - 合成速度，用于调整合成音频的速度。
-    ///
-    /// # 示例
-    ///
-    /// ```rust
-    /// use kokoro_tts::start_synth_session;
-    ///
-    /// #[tokio::main]
-    /// async fn main() {
-    ///     let (mut sink, _) = start_synth_session("zf_xiaoxiao", 1.1);
-    ///     sink.set_speed(1.2);
-    /// }
-    /// ```
-    ///
-    pub fn set_speed(&mut self, speed: f32) {
-        self.speed = speed
+    pub fn set_voice(&mut self, voice: Voice) {
+        self.voice = voice
     }
 
     /// 发送合成请求
@@ -115,37 +96,33 @@ impl<S: Clone> SynthSink<S> {
     /// # 示例
     ///
     /// ```rust
-    /// use kokoro_tts::start_synth_session;
+    /// use kokoro_tts::{KokoroTts, Voice};
     ///
     /// #[tokio::main]
     /// async fn main() {
-    ///     let (mut sink, _) = start_synth_session("zf_xiaoxiao", 1.1);
+    ///     let Ok(tts) = KokoroTts::new("../kokoro-v1.1-zh.onnx", "../voices-v1.1-zh.bin").await else {
+    ///         return;
+    ///     };
+    ///     let (mut sink, _) =tts.stream(Voice::Zf003(2));
     ///     let _ = sink.synth("hello world.").await;
     /// }
     /// ```
     ///
     pub async fn synth(&mut self, text: S) -> Result<(), KokoroError> {
-        self.send((self.voice_name.clone(), text, self.speed)).await
+        self.send((self.voice, text)).await
     }
 }
 
-impl<S> Sink<(S, S, f32)> for SynthSink<S> {
+impl<S> Sink<(Voice, S)> for SynthSink<S> {
     type Error = KokoroError;
 
     fn poll_ready(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
         Poll::Ready(Ok(()))
     }
 
-    fn start_send(
-        self: Pin<&mut Self>,
-        (voice_name, text, speed): (S, S, f32),
-    ) -> Result<(), Self::Error> {
+    fn start_send(self: Pin<&mut Self>, (voice, text): (Voice, S)) -> Result<(), Self::Error> {
         self.tx
-            .send(Request {
-                voice_name,
-                text,
-                speed,
-            })
+            .send(Request { voice, text })
             .map_err(|e| KokoroError::Send(e.to_string()))
     }
 
@@ -158,56 +135,20 @@ impl<S> Sink<(S, S, f32)> for SynthSink<S> {
     }
 }
 
-/// 启动语音合成会话
-///
-/// 该函数用于启动一个语音合成会话，返回一个`SynthSink`和`SynthStream`，用于发送合成请求和接收合成结果。
-///
-/// # 参数
-///
-/// * `voice_name` - 语音名称，用于选择要合成的语音。
-/// * `speed` - 合成速度，用于调整合成音频的速度。
-///
-/// # 返回值
-///
-/// 返回一个包含`SynthSink`和`SynthStream`的元组。
-///
-/// # 示例
-///
-/// ```rust
-/// use kokoro_tts::start_synth_session;
-/// use futures::StreamExt;
-///
-/// #[tokio::main]
-/// async fn main() {
-///     let (mut sink, mut stream) = start_synth_session("zf_xiaoxiao", 1.1);
-///     let _ = sink.synth("hello world.").await;
-///     let _ = sink.synth("你好，我们是一群追逐梦想的人。").await;
-///     sink.set_speed(1.2);
-///     sink.set_voice("zm_yunyang");
-///     let _ = sink.synth("今天天气如何？").await;
-///
-///     while let Some((audio, took)) = stream.next().await {
-///         println!("Synth took: {:?}", took);
-///     }
-/// }
-/// ```
-///
-/// # 注意
-///
-/// 请确保在运行此函数之前已经正确加载了模型和语音数据。
-///
-/// # 错误处理
-///
-/// 如果合成过程中出现错误，将返回一个`KokoroError`类型的错误。
-pub fn start_synth_session<S: AsRef<str> + Send + 'static>(
-    voice_name: S,
-    speed: f32,
-) -> (SynthSink<S>, SynthStream) {
+pub(super) fn start_synth_session<'a, F, R, S>(
+    voice: Voice,
+    synth_request_callback: F,
+) -> (SynthSink<S>, SynthStream)
+where
+    F: Fn(S, Voice) -> R + Send + 'static,
+    R: Future<Output = Result<(Vec<f32>, Duration), KokoroError>> + Send,
+    S: AsRef<str> + Send + 'static,
+{
     let (tx, mut rx) = unbounded_channel::<Request<S>>();
     let (tx2, rx2) = unbounded_channel();
     tokio::spawn(async move {
         while let Some(req) = rx.recv().await {
-            let (data, took) = synth(req.voice_name, req.text, req.speed).await?;
+            let (data, took) = synth_request_callback(req.text, req.voice).await?;
             tx2.send(Response { data, took })
                 .map_err(|e| KokoroError::Send(e.to_string()))?;
         }
@@ -215,12 +156,5 @@ pub fn start_synth_session<S: AsRef<str> + Send + 'static>(
         Ok::<_, KokoroError>(())
     });
 
-    (
-        SynthSink {
-            tx,
-            voice_name,
-            speed,
-        },
-        SynthStream { rx: rx2 },
-    )
+    (SynthSink { tx, voice }, SynthStream { rx: rx2 })
 }

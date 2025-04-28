@@ -1,65 +1,33 @@
-use crate::{KokoroError, g2p, get_model, get_token_ids, get_voice};
+use {
+    crate::{KokoroError, Voice, g2p, get_token_ids},
+    ndarray::Array,
+    ort::{inputs, session::Session},
+    std::{
+        sync::Weak,
+        time::{Duration, SystemTime},
+    },
+};
 
-use ndarray::Array;
-use ort::inputs;
-use std::time::{Duration, SystemTime};
-
-/// 语音合成函数
-///
-/// 该函数接受语音名称、文本内容和速度参数，并返回合成后的音频数据和合成所花费的时间。
-///
-/// # 参数
-///
-/// * `voice_name` - 语音名称，用于选择要合成的语音。
-/// * `text` - 要合成的文本内容。
-/// * `speed` - 合成速度，用于调整合成音频的速度。
-///
-/// # 返回值
-///
-/// 返回一个包含合成音频数据和合成所花费时间的元组。
-///
-/// # 错误处理
-///
-/// 如果合成过程中出现错误，将返回一个`KokoroError`类型的错误。
-///
-/// # 示例
-///
-/// ```rust
-/// use kokoro_tts::synth;
-///
-/// #[tokio::main]
-/// async fn main() {
-///     if let Ok((audio, took)) = synth("am_puck", "你好，我们是一群追逐梦想的人。", 1.0).await {
-///         println!("Synth took: {:?}", took);
-///     }
-/// }
-/// ```
-///
-/// # 注意
-///
-/// 请确保在运行此函数之前已经正确加载了模型和语音数据。
-///
-/// # 错误处理
-///
-/// 如果合成过程中出现错误，将返回一个`KokoroError`类型的错误。
-pub async fn synth<S: AsRef<str>>(
-    voice_name: S,
-    text: S,
+async fn synth_v10<'a, P, S>(
+    model: Weak<Session>,
+    phonemes: S,
+    pack: P,
     speed: f32,
-) -> Result<(Vec<f32>, Duration), KokoroError> {
-    let phonemes = g2p(text.as_ref())?;
-    let phonemes = get_token_ids(&phonemes);
+) -> Result<(Vec<f32>, Duration), KokoroError>
+where
+    P: AsRef<Vec<Vec<Vec<f32>>>>,
+    S: AsRef<str>,
+{
+    let phonemes = get_token_ids(phonemes.as_ref(), false);
     let phonemes = Array::from_shape_vec((1, phonemes.len()), phonemes)?;
-    let pack = get_voice(voice_name).await?;
-    let ref_s = pack[phonemes.len() - 1]
+    let ref_s = pack.as_ref()[phonemes.len() - 1]
         .first()
         .map(|i| i.clone())
         .unwrap_or_default();
 
     let style = Array::from_shape_vec((1, ref_s.len()), ref_s)?;
     let speed = Array::from_vec(vec![speed]);
-
-    let model = get_model().await?;
+    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
     let t = SystemTime::now();
     let kokoro_output = model
         .run_async(inputs![
@@ -77,4 +45,68 @@ pub async fn synth<S: AsRef<str>>(
     }
 
     Err(KokoroError::SynthFailed(elapsed))
+}
+
+async fn synth_v11<P, S>(
+    model: Weak<Session>,
+    phonemes: S,
+    pack: P,
+    speed: i32,
+) -> Result<(Vec<f32>, Duration), KokoroError>
+where
+    P: AsRef<Vec<Vec<Vec<f32>>>>,
+    S: AsRef<str>,
+{
+    let phonemes = get_token_ids(phonemes.as_ref(), true);
+    let phonemes = Array::from_shape_vec((1, phonemes.len()), phonemes)?;
+    let ref_s = pack.as_ref()[phonemes.len() - 1]
+        .first()
+        .map(|i| i.clone())
+        .unwrap_or_default();
+
+    let style = Array::from_shape_vec((1, ref_s.len()), ref_s)?;
+    let speed = Array::from_vec(vec![speed]);
+    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
+    let t = SystemTime::now();
+    let kokoro_output = model
+        .run_async(inputs![
+            "input_ids" => phonemes.view(),
+            "style" => style.view(),
+            "speed" => speed.view(),
+        ]?)?
+        .await?;
+    let elapsed = t.elapsed()?;
+    if let (Some(audio), Some(duration)) = (
+        kokoro_output["waveform"]
+            .try_extract_tensor::<f32>()?
+            .as_slice(),
+        kokoro_output["duration"]
+            .try_extract_tensor::<i64>()?
+            .as_slice(),
+    ) {
+        let _ = dbg!(duration.len());
+        return Ok((audio.to_owned(), elapsed));
+    }
+
+    Err(KokoroError::SynthFailed(elapsed))
+}
+
+pub(super) async fn synth<'a, P, S>(
+    model: Weak<Session>,
+    text: S,
+    pack: P,
+    voice: Voice,
+) -> Result<(Vec<f32>, Duration), KokoroError>
+where
+    P: AsRef<Vec<Vec<Vec<f32>>>>,
+    S: AsRef<str>,
+{
+    let phonemes = g2p(text.as_ref(), voice.is_v11_supported())?;
+    #[cfg(debug_assertions)]
+    println!("{}", phonemes);
+    match voice {
+        v if v.is_v11_supported() => synth_v11(model, phonemes, pack, v.get_speed_v11()?).await,
+        v if v.is_v10_supported() => synth_v10(model, phonemes, pack, v.get_speed_v10()?).await,
+        v => Err(KokoroError::VoiceVersionInvalid(v.get_name().to_owned())),
+    }
 }

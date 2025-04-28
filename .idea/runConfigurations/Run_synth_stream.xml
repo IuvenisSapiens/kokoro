@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="Run synth_stream" type="CargoCommandRunConfiguration" factoryName="Cargo Command" focusToolWindowBeforeRun="true">
-    <option name="buildProfileId" value="test" />
+    <option name="buildProfileId" value="dev" />
     <option name="command" value="run --example synth_stream" />
     <option name="workingDirectory" value="file://$PROJECT_DIR$" />
     <envs />

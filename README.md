@@ -8,14 +8,14 @@
 
 ## 概述
 
-本项目包含两个示例脚本，展示了如何使用Kokoro库进行语音合成。这些示例展示了如何直接合成语音和通过流式合成来处理更长的文本。
+本项目包含幾个示例脚本，展示了如何使用Kokoro库进行语音合成。这些示例展示了如何直接合成语音和通过流式合成来处理更长的文本。
 
 ## 前置条件
 
 - Rust编程语言
 - Tokio异步运行时
 - Rodio音频处理和播放的库（可选）
-- 下载模型资源[这里](https://github.com/mzdk100/kokoro/releases/tag/V1.0)
+- 下载模型资源，在這裡可以找到[1.0模型](https://github.com/mzdk100/kokoro/releases/tag/V1.0)和[1.1模型](https://github.com/mzdk100/kokoro/releases/tag/V1.1)
 
 ## 特点
 - 跨平台，可以轻松在Windows、Mac OS上构建，也可以轻松交叉编译到安卓和iOS。
@@ -27,7 +27,8 @@
 
 1. 运行示例，克隆或下载本项目到本地。在项目根目录下运行：
     ```shell
-    cargo run --example synth_directly
+    cargo run --example synth_directly_v10
+    cargo run --example synth_directly_v11
     ```
 2. 集成到自己的项目中：
     ```shell

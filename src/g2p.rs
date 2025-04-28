@@ -1,5 +1,8 @@
 /// 文本到国际音标的转换
-use super::{PinyinError, pinyin_to_ipa};
+mod v10;
+mod v11;
+
+use super::PinyinError;
 use chinese_number::{ChineseCase, ChineseCountMethod, ChineseVariant, NumberToChinese};
 #[cfg(feature = "use-cmudict")]
 use cmudict_fast::{Cmudict, Error as CmudictError};
@@ -75,76 +78,10 @@ impl From<std::str::Utf8Error> for G2PError {
     }
 }
 
-fn retone(p: &str) -> String {
-    let chars: Vec<char> = p.chars().collect();
-    let mut result = String::with_capacity(p.len());
-    let mut i = 0;
-
-    while i < chars.len() {
-        match () {
-            // 三声调优先处理
-            _ if i + 2 < chars.len()
-                && chars[i] == '˧'
-                && chars[i + 1] == '˩'
-                && chars[i + 2] == '˧' =>
-            {
-                result.push('↓');
-                i += 3;
-            }
-            // 二声调
-            _ if i + 1 < chars.len() && chars[i] == '˧' && chars[i + 1] == '˥' => {
-                result.push('↗');
-                i += 2;
-            }
-            // 四声调
-            _ if i + 1 < chars.len() && chars[i] == '˥' && chars[i + 1] == '˩' => {
-                result.push('↘');
-                i += 2;
-            }
-            // 一声调
-            _ if chars[i] == '˥' => {
-                result.push('→');
-                i += 1;
-            }
-            // 组合字符替换（ɻ̩ 和 ɱ̩）
-            _ if i + 1 < chars.len()
-                && (
-                    (chars[i] == '\u{027B}' && chars[i+1] == '\u{0329}') ||  // ɻ̩
-                (chars[i] == '\u{0271}' && chars[i+1] == '\u{0329}')
-                    // ɱ̩
-                ) =>
-            {
-                result.push('ɨ');
-                i += 2;
-            }
-            // 默认情况
-            _ => {
-                result.push(chars[i]);
-                i += 1;
-            }
-        }
-    }
-
-    assert!(
-        !result.contains('\u{0329}'),
-        "Unexpected combining mark in: {}",
-        result
-    );
-    result
-}
-
-fn py2ipa(py: &str) -> Result<String, G2PError> {
-    pinyin_to_ipa(py)?
-        .first()
-        .map_or(Err(G2PError::EnptyData), |i| {
-            Ok(i.iter().map(|i| retone(i)).collect::<String>())
-        })
-}
-
 fn word2ipa_zh(word: &str) -> Result<String, G2PError> {
     let iter = word.chars().map(|i| match i.to_pinyin() {
         None => Ok(i.to_string()),
-        Some(p) => py2ipa(p.with_tone_num_end()),
+        Some(p) => v10::py2ipa(p.with_tone_num_end()),
     });
 
     let mut result = String::new();
@@ -266,7 +203,7 @@ fn num_repr(text: &str) -> Result<String, G2PError> {
         .to_string())
 }
 
-pub fn g2p(text: &str) -> Result<String, G2PError> {
+pub fn g2p(text: &str, use_v11: bool) -> Result<String, G2PError> {
     let text = num_repr(&text)?;
     let sentence_pattern = Regex::new(
         r#"([\u4E00-\u9FFF]+)|([，。：·？、！《》（）【】〖〗〔〕“”‘’〈〉…—　]+)|([\u0000-\u00FF]+)+"#,
@@ -278,9 +215,17 @@ pub fn g2p(text: &str) -> Result<String, G2PError> {
         match (i.get(1), i.get(2), i.get(3)) {
             (Some(text), _, _) => {
                 let text = to_half_shape(text.as_str());
-                for i in jieba.cut(&text, true) {
-                    result.push_str(&word2ipa_zh(i)?);
+                if use_v11 {
+                    if !result.is_empty() && !result.ends_with(' ') {
+                        result.push(' ');
+                    }
+                    result.push_str(&v11::g2p(&text, true));
                     result.push(' ');
+                } else {
+                    for i in jieba.cut(&text, true) {
+                        result.push_str(&word2ipa_zh(i)?);
+                        result.push(' ');
+                    }
                 }
             }
             (_, Some(text), _) => {
@@ -336,6 +281,16 @@ mod tests {
         assert_eq!("tʃˈɪldɹɛn", word2ipa_en("children")?);
         assert_eq!("ˈaʊə", word2ipa_en("hour")?);
         assert_eq!("dˈeɪz", word2ipa_en("days")?);
+
+        Ok(())
+    }
+
+    #[test]
+    fn test_g2p() -> Result<(), super::G2PError> {
+        use super::g2p;
+
+        assert_eq!("ni↓xau↓ ʂɻ↘ʨje↘", g2p("你好世界", false)?);
+        assert_eq!("ㄋㄧ2ㄏㄠ3/ㄕ十4ㄐㄝ4", g2p("你好世界", true)?);
 
         Ok(())
     }
