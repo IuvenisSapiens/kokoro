@@ -10,6 +10,9 @@
 #include <windows.h>
 #else
 #include <dirent.h>
+#include <stdlib.h>
+#include <string.h>
+#include <wctype.h>
 #endif
 
 #if defined(_WIN32) || defined(_WIN64)

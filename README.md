@@ -34,7 +34,11 @@
     ```shell
     cargo add kokoro-tts
     ```
-    参考[examples](examples)文件夹中的示例代码进行开发。
+3. Linux依赖项
+    ```shell
+    sudo apt install libasound2-dev
+    ```
+参考[examples](examples)文件夹中的示例代码进行开发。
 
 
 ## 许可证
