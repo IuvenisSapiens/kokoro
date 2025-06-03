@@ -10,12 +10,12 @@ use {
     bincode::{config::standard, decode_from_slice},
     ort::{execution_providers::CUDAExecutionProvider, session::Session},
     std::{collections::HashMap, path::Path, sync::Arc, time::Duration},
-    tokio::fs::read,
+    tokio::{fs::read, sync::Mutex},
 };
 pub use {error::*, g2p::*, stream::*, tokenizer::*, transcription::*, voice::*};
 
 pub struct KokoroTts {
-    model: Arc<Session>,
+    model: Arc<Mutex<Session>>,
     voices: Arc<HashMap<String, Vec<Vec<Vec<f32>>>>>,
 }
 
@@ -28,7 +28,7 @@ impl KokoroTts {
             .with_execution_providers([CUDAExecutionProvider::default().build()])?
             .commit_from_file(model_path)?;
         Ok(Self {
-            model: model.into(),
+            model: Arc::new(model.into()),
             voices,
         })
     }
@@ -53,8 +53,8 @@ impl KokoroTts {
         let model = Arc::downgrade(&self.model);
 
         start_synth_session(voice, move |text, voice| {
-            let model = model.clone();
             let voices = voices.clone();
+            let model = model.clone();
             async move {
                 let name = voice.get_name();
                 let voices = voices.upgrade().ok_or(KokoroError::ModelReleased)?;

@@ -6,7 +6,7 @@ use std::{
     error::Error,
     fmt::{Debug, Display, Formatter, Result as FmtResult},
     io::Error as IoError,
-    time::{Duration, SystemTimeError},
+    time::SystemTimeError,
 };
 
 #[derive(Debug)]
@@ -18,7 +18,6 @@ pub enum KokoroError {
     Ort(OrtError),
     Send(String),
     Shape(ShapeError),
-    SynthFailed(Duration),
     SystemTime(SystemTimeError),
     VoiceNotFound(String),
     VoiceVersionInvalid(String),
@@ -35,7 +34,6 @@ impl Display for KokoroError {
             Self::ModelReleased => write!(f, "ModelReleased"),
             Self::Send(e) => Display::fmt(e, f),
             Self::Shape(e) => Display::fmt(e, f),
-            Self::SynthFailed(d) => write!(f, "SynthFailed: It took {:?}", d),
             Self::SystemTime(e) => Display::fmt(e, f),
             Self::VoiceNotFound(name) => write!(f, "VoiceNotFound({})", name),
             Self::VoiceVersionInvalid(msg) => write!(f, "VoiceVersionInvalid({})", msg),

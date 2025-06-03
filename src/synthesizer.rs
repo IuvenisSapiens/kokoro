@@ -1,15 +1,20 @@
 use {
     crate::{KokoroError, Voice, g2p, get_token_ids},
     ndarray::Array,
-    ort::{inputs, session::Session},
+    ort::{
+        inputs,
+        session::{RunOptions, Session},
+        value::TensorRef,
+    },
     std::{
         sync::Weak,
         time::{Duration, SystemTime},
     },
+    tokio::sync::Mutex,
 };
 
 async fn synth_v10<'a, P, S>(
-    model: Weak<Session>,
+    model: Weak<Mutex<Session>>,
     phonemes: S,
     pack: P,
     speed: f32,
@@ -18,6 +23,7 @@ where
     P: AsRef<Vec<Vec<Vec<f32>>>>,
     S: AsRef<str>,
 {
+    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
     let phonemes = get_token_ids(phonemes.as_ref(), false);
     let phonemes = Array::from_shape_vec((1, phonemes.len()), phonemes)?;
     let ref_s = pack.as_ref()[phonemes.len() - 1]
@@ -27,28 +33,27 @@ where
 
     let style = Array::from_shape_vec((1, ref_s.len()), ref_s)?;
     let speed = Array::from_vec(vec![speed]);
-    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
+    let options = RunOptions::new()?;
+    let mut model = model.lock().await;
     let t = SystemTime::now();
     let kokoro_output = model
-        .run_async(inputs![
-            "tokens" => phonemes.view(),
-            "style" => style.view(),
-            "speed" => speed.view(),
-        ]?)?
+        .run_async(
+            inputs![
+                "tokens" => TensorRef::from_array_view(&phonemes)?,
+                "style" => TensorRef::from_array_view(&style)?,
+                "speed" => TensorRef::from_array_view(&speed)?,
+            ],
+            &options,
+        )?
         .await?;
     let elapsed = t.elapsed()?;
-    if let Some(audio) = kokoro_output["audio"]
-        .try_extract_tensor::<f32>()?
-        .as_slice()
-    {
-        return Ok((audio.to_owned(), elapsed));
-    }
+    let (_, audio) = kokoro_output["audio"].try_extract_tensor::<f32>()?;
 
-    Err(KokoroError::SynthFailed(elapsed))
+    Ok((audio.to_owned(), elapsed))
 }
 
 async fn synth_v11<P, S>(
-    model: Weak<Session>,
+    model: Weak<Mutex<Session>>,
     phonemes: S,
     pack: P,
     speed: i32,
@@ -57,6 +62,7 @@ where
     P: AsRef<Vec<Vec<Vec<f32>>>>,
     S: AsRef<str>,
 {
+    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
     let phonemes = get_token_ids(phonemes.as_ref(), true);
     let phonemes = Array::from_shape_vec((1, phonemes.len()), phonemes)?;
     let ref_s = pack.as_ref()[phonemes.len() - 1]
@@ -66,33 +72,29 @@ where
 
     let style = Array::from_shape_vec((1, ref_s.len()), ref_s)?;
     let speed = Array::from_vec(vec![speed]);
-    let model = model.upgrade().ok_or(KokoroError::ModelReleased)?;
+    let options = RunOptions::new()?;
+    let mut model = model.lock().await;
     let t = SystemTime::now();
     let kokoro_output = model
-        .run_async(inputs![
-            "input_ids" => phonemes.view(),
-            "style" => style.view(),
-            "speed" => speed.view(),
-        ]?)?
+        .run_async(
+            inputs![
+                "input_ids" => TensorRef::from_array_view(&phonemes)?,
+                "style" => TensorRef::from_array_view(&style)?,
+                "speed" => TensorRef::from_array_view(&speed)?,
+            ],
+            &options,
+        )?
         .await?;
     let elapsed = t.elapsed()?;
-    if let (Some(audio), Some(duration)) = (
-        kokoro_output["waveform"]
-            .try_extract_tensor::<f32>()?
-            .as_slice(),
-        kokoro_output["duration"]
-            .try_extract_tensor::<i64>()?
-            .as_slice(),
-    ) {
-        let _ = dbg!(duration.len());
-        return Ok((audio.to_owned(), elapsed));
-    }
+    let (_, audio) = kokoro_output["waveform"].try_extract_tensor::<f32>()?;
+    let (_, duration) = kokoro_output["duration"].try_extract_tensor::<i64>()?;
+    let _ = dbg!(duration.len());
 
-    Err(KokoroError::SynthFailed(elapsed))
+    Ok((audio.to_owned(), elapsed))
 }
 
 pub(super) async fn synth<'a, P, S>(
-    model: Weak<Session>,
+    model: Weak<Mutex<Session>>,
     text: S,
     pack: P,
     voice: Voice,
