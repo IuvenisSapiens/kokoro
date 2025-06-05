@@ -283,6 +283,7 @@ const VOCAB_V11: LazyLock<HashMap<char, u8>> = LazyLock::new(|| {
     map.insert('外', 160);
     map.insert('万', 161);
     map.insert('ʰ', 162);
+    map.insert('王', 163);
     map.insert('ʲ', 164);
     map.insert('为', 165);
     map.insert('文', 166);
