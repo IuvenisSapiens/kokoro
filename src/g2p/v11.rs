@@ -169,7 +169,14 @@ static PHRASES_DICT: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     map.insert("掺和", "chan1 huo5");
     map
 });
-static JIEBA: LazyLock<Jieba> = LazyLock::new(Jieba::new);
+static JIEBA: LazyLock<Jieba> = LazyLock::new(|| {
+    let mut jieba = Jieba::new();
+    for k in PHRASES_DICT.keys() {
+        jieba.add_word(*k, None, None);
+    }
+
+    jieba
+});
 static ZH_MAP: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     let mut map = HashMap::new();
     map.insert("b", "ㄅ");
@@ -1265,5 +1272,11 @@ mod tests {
             convert_pinyin(initial, &mut pinyin);
             assert_eq!(pinyin, expected, "failed: {}+{}", initial, input);
         }
+    }
+
+    #[test]
+    fn test_g2p() {
+        assert_eq!(g2p("借还款", true), "ㄐㄝ4ㄏ万2ㄎ万3");
+        assert_eq!(g2p("时间为", true), "ㄕ十2ㄐ言1为2");
     }
 }
