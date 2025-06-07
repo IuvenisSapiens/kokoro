@@ -127,10 +127,15 @@ fn word2ipa_en(word: &str) -> Result<String, G2PError> {
 
 #[cfg(not(feature = "use-cmudict"))]
 fn word2ipa_en(word: &str) -> Result<String, G2PError> {
+    use super::letters_to_ipa;
     use std::{
         ffi::{CStr, CString, c_char},
         sync::Once,
     };
+
+    if word.chars().count() < 4 && word.chars().all(|c| c.is_ascii_uppercase()) {
+        return Ok(letters_to_ipa(word));
+    }
 
     unsafe extern "C" {
         fn TextToPhonemes(text: *const c_char) -> *const ::std::os::raw::c_char;

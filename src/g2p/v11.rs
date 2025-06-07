@@ -159,6 +159,7 @@ static PHRASES_DICT: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     map.insert("各地", "ge4 di4");
     map.insert("借还款", "jie4 huan2 kuan3");
     map.insert("时间为", "shi2 jian1 wei2");
+    map.insert("角色", "jue2 se4");
     map.insert("为准", "wei2 zhun3");
     map.insert("色差", "se4 cha1");
     map.insert("嗲", "dia3");
@@ -172,7 +173,7 @@ static PHRASES_DICT: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
 static JIEBA: LazyLock<Jieba> = LazyLock::new(|| {
     let mut jieba = Jieba::new();
     for k in PHRASES_DICT.keys() {
-        jieba.add_word(*k, None, None);
+        jieba.add_word(*k, None, Some("x"));
     }
 
     jieba
