@@ -33,4 +33,4 @@ rodio = { version = "0.20.1",default-features = false,features = ["wav"] }
 tokio = {version = "1.45.1",features = ["macros"]}
 
 [build-dependencies]
-cc = "1"
+cc = "1.2.27"
