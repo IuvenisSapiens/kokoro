@@ -4,9 +4,6 @@ use {
     chinese_number::{ChineseCountMethod, ChineseToNumber},
     jieba_rs::Jieba,
     pinyin::ToPinyin,
-    serde_json,
-    std::fs::File,
-    std::io::Read,
     std::{collections::HashMap, sync::LazyLock},
 };
 
@@ -152,31 +149,18 @@ const NOT_ERHUA: [&str; 44] = [
 ];
 const UNK: &str = "❓";
 
-static PHRASES_DICT: LazyLock<HashMap<String, String>> = LazyLock::new(|| {
+static PHRASES_DICT: LazyLock<HashMap<&str, &str>> = LazyLock::new(|| {
     let mut map = HashMap::new();
-    let file_path = "data/phrases.json";
-    match File::open(file_path) {
-        Ok(mut file) => {
-            let mut data = String::new();
-            if file.read_to_string(&mut data).is_ok() {
-                if let Ok(phrases) = serde_json::from_str::<HashMap<String, String>>(&data) {
-                    for (k, v) in phrases {
-                        map.insert(k, v);
-                    }
-                } else {
-                    eprintln!("无法解析 JSON 文件: {}", file_path);
-                }
-            } else {
-                eprintln!("无法读取文件: {}", file_path);
-            }
-        }
-        Err(_) => {
-            eprintln!("无法打开文件: {}", file_path);
-        }
+    let phrases = include_str!("../../dict/pinyin.dict");
+    for line in phrases.lines() {
+        let Some((k, v)) = line.trim().split_once(" ") else {
+            continue;
+        };
+        map.insert(k, v);
     }
+
     map
 });
-
 
 static JIEBA: LazyLock<Jieba> = LazyLock::new(|| {
     let mut jieba = Jieba::new();
