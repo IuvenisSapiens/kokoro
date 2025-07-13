@@ -16,7 +16,7 @@ bincode = "2.0.1"
 chinese-number = { version = "0.7.7",default-features = false,features = ["number-to-chinese", "chinese-to-number"] }
 cmudict-fast = { version = "0.8.0", optional = true }
 futures = "0.3.31"
-jieba-rs = "0.7.3"
+jieba-rs = "0.7.4"
 log = "0.4.27"
 ndarray = "0.16.1"
 ort = "2.0.0-rc.10"
@@ -24,12 +24,13 @@ pin-project = "1.1.10"
 pinyin = "0.10.0"
 rand="0.9.1"
 regex = "1.11.1"
-tokio = { version = "1.45.1",features = ["fs", "rt-multi-thread","time", "sync"] }
+serde_json = "1.0.140"
+tokio = { version = "1.46.1",features = ["fs", "rt-multi-thread","time", "sync"] }
 
 [dev-dependencies]
 anyhow = "1.0.98"
-rodio = { version = "0.20.1",default-features = false,features = ["wav"] }
-tokio = {version = "1.45.1",features = ["macros"]}
+rodio = { version = "0.21.0",default-features = false,features = ["wav","playback"] }
+tokio = {version = "1.46.1",features = ["macros"]}
 
 [build-dependencies]
-cc = "1"
+cc = "1.2.29"
