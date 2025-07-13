@@ -25,12 +25,12 @@ pinyin = "0.10.0"
 rand="0.9.1"
 regex = "1.11.1"
 serde_json = "1.0.140"
-tokio = { version = "1.45.1",features = ["fs", "rt-multi-thread","time", "sync"] }
+tokio = { version = "1.46.1",features = ["fs", "rt-multi-thread","time", "sync"] }
 
 [dev-dependencies]
 anyhow = "1.0.98"
-rodio = { version = "0.20.1",default-features = false,features = ["wav"] }
-tokio = {version = "1.45.1",features = ["macros"]}
+rodio = { version = "0.21.0",default-features = false,features = ["wav","playback"] }
+tokio = {version = "1.46.1",features = ["macros"]}
 
 [build-dependencies]
-cc = "1.2.27"
+cc = "1.2.29"
