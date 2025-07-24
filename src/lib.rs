@@ -33,10 +33,10 @@ impl KokoroTts {
         })
     }
 
-    pub async fn new_from_bytes(
-        model: impl AsRef<[u8]>,
-        voices: impl AsRef<[u8]>,
-    ) -> Result<Self, KokoroError> {
+    pub async fn new_from_bytes<B>(model: B, voices: B) -> Result<Self, KokoroError>
+    where
+        B: AsRef<[u8]>,
+    {
         let (voices, _) = decode_from_slice(voices.as_ref(), standard())?;
 
         let model = Session::builder()?
