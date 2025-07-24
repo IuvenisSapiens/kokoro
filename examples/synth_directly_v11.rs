@@ -20,7 +20,7 @@ fn play_sound(data: &[f32]) {
     let output_stream = output_stream_builder.open_stream().unwrap();
     let stream_handle = output_stream.mixer();
     let player = Sink::connect_new(&stream_handle);
-    
+
     player.append(SamplesBuffer::new(1, 24000, data));
     player.sleep_until_end()
 }
