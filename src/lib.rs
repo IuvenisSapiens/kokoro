@@ -33,6 +33,21 @@ impl KokoroTts {
         })
     }
 
+    pub async fn new_from_bytes(
+        model: impl AsRef<[u8]>,
+        voices: impl AsRef<[u8]>,
+    ) -> Result<Self, KokoroError> {
+        let (voices, _) = decode_from_slice(voices.as_ref(), standard())?;
+
+        let model = Session::builder()?
+            .with_execution_providers([CUDAExecutionProvider::default().build()])?
+            .commit_from_memory(model.as_ref())?;
+        Ok(Self {
+            model: Arc::new(model.into()),
+            voices,
+        })
+    }
+
     pub async fn synth<S>(&self, text: S, voice: Voice) -> Result<(Vec<f32>, Duration), KokoroError>
     where
         S: AsRef<str>,
