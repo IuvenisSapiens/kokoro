@@ -6,15 +6,15 @@
   <component name="CargoProjects">
     <cargoProject FILE="$PROJECT_DIR$/Cargo.toml">
       <package file="$PROJECT_DIR$">
-        <enabledFeature name="default" />
+        <feature name="default" enabled="true" />
       </package>
     </cargoProject>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d50e30d2-73ca-469f-a511-9d9815c6b97d" name="更改" comment="refactor: Replace phrases.json with pinyin.dict and update dependencies&#10;&#10;* Replace JSON phrases file with a simpler text-based dictionary format&#10;* Remove serde_json dependency as it's no longer needed&#10;* Bump version to 0.2.7&#10;* Clean up whitespace in example code">
+    <list default="true" id="d50e30d2-73ca-469f-a511-9d9815c6b97d" name="更改" comment="chore: Bump version to 0.2.8 and update dependencies">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/lib.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/lib.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/synthesizer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/synthesizer.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,12 +42,12 @@
     &quot;assignee&quot;: &quot;mzdk100&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/mzdk100/kokoro.git&quot;,
-    &quot;accountId&quot;: &quot;5605ca01-c834-4dd2-807a-3554dc231aa3&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/mzdk100/kokoro.git",
+    "accountId": "65557e06-0b15-4b2e-83ab-88003af6819e"
   }
-}</component>
+}]]></component>
   <component name="InvalidFacetManager">
     <ignored-facets>
       <facet id="kokoro/invalid/Python facet" />
@@ -67,46 +67,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Cargo.All Tests.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Run synth_directly_v10`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Build `Run synth_directly`.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Expand kokoro::synth.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Expand kokoro_tts.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Publish.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run fetch_voices.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run synth_directly.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run synth_directly_v10.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run synth_directly_v11.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run synth_stream (1).executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run synth_stream.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Run.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test doc.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test g2p::tests.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test g2p::tests::test_g2p.executor&quot;: &quot;Run&quot;,
-    &quot;Cargo.Test g2p::tests::test_w.executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.g2p.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;F:/workspace/kokoro&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
-    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
-    &quot;org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs&quot;: &quot;true&quot;,
-    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Cargo.All Tests.executor": "Run",
+    "Cargo.Build `Run synth_directly_v10`.executor": "Run",
+    "Cargo.Build `Run synth_directly`.executor": "Run",
+    "Cargo.Expand kokoro::synth.executor": "Run",
+    "Cargo.Expand kokoro_tts.executor": "Run",
+    "Cargo.Publish.executor": "Run",
+    "Cargo.Run fetch_voices.executor": "Run",
+    "Cargo.Run synth_directly.executor": "Run",
+    "Cargo.Run synth_directly_v10.executor": "Run",
+    "Cargo.Run synth_directly_v11.executor": "Run",
+    "Cargo.Run synth_stream (1).executor": "Run",
+    "Cargo.Run synth_stream.executor": "Run",
+    "Cargo.Run.executor": "Run",
+    "Cargo.Test doc.executor": "Run",
+    "Cargo.Test g2p::tests.executor": "Run",
+    "Cargo.Test g2p::tests::test_g2p.executor": "Run",
+    "Cargo.Test g2p::tests::test_w.executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.g2p.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.rust.reset.selective.auto.import": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "F:/workspace/kokoro",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
+    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
+    "org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs": "true",
+    "org.rust.first.attach.projects": "true",
+    "settings.editor.selected.configurable": "preferences.keymap",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\workspace\kokoro\examples" />
@@ -306,7 +307,8 @@
       <workItem from="1749374050187" duration="24000" />
       <workItem from="1752431678668" duration="312000" />
       <workItem from="1752432004345" duration="1736000" />
-      <workItem from="1753363184143" duration="82000" />
+      <workItem from="1753363184143" duration="105000" />
+      <workItem from="1760154848261" duration="3357000" />
     </task>
     <task id="LOCAL-00001" summary="Kokoro">
       <option name="closed" value="true" />
@@ -452,7 +454,15 @@
       <option name="project" value="LOCAL" />
       <updated>1752433657955</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="chore: Bump version to 0.2.8 and update dependencies">
+      <option name="closed" value="true" />
+      <created>1753363657864</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1753363657864</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -488,7 +498,8 @@
     <MESSAGE value="Fix issue #7&#10;&#10;* 优化jieba分词器初始化&#10;* 添加测试用例&#10;* 发布0.2.5版本" />
     <MESSAGE value="Fix issue #8.&#10;&#10;* 修复角色发音&#10;* 优化英文缩写转IPA功能&#10;* 发布0.2.6版本" />
     <MESSAGE value="refactor: Replace phrases.json with pinyin.dict and update dependencies&#10;&#10;* Replace JSON phrases file with a simpler text-based dictionary format&#10;* Remove serde_json dependency as it's no longer needed&#10;* Bump version to 0.2.7&#10;* Clean up whitespace in example code" />
-    <option name="LAST_COMMIT_MESSAGE" value="refactor: Replace phrases.json with pinyin.dict and update dependencies&#10;&#10;* Replace JSON phrases file with a simpler text-based dictionary format&#10;* Remove serde_json dependency as it's no longer needed&#10;* Bump version to 0.2.7&#10;* Clean up whitespace in example code" />
+    <MESSAGE value="chore: Bump version to 0.2.8 and update dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Bump version to 0.2.8 and update dependencies" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>
