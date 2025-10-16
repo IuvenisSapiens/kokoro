@@ -14,7 +14,10 @@
     <list default="true" id="d50e30d2-73ca-469f-a511-9d9815c6b97d" name="更改" comment="chore: Bump version to 0.2.8 and update dependencies">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synthesizer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/synthesizer.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build.rs" beforeDir="false" afterPath="$PROJECT_DIR$/build.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/large_pinyin.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/dict/pinyin.dict" beforeDir="false" afterPath="$PROJECT_DIR$/dict/pinyin.dict" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/synth_stream.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/synth_stream.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,12 +45,12 @@
     &quot;assignee&quot;: &quot;mzdk100&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/mzdk100/kokoro.git",
-    "accountId": "65557e06-0b15-4b2e-83ab-88003af6819e"
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/mzdk100/kokoro.git&quot;,
+    &quot;accountId&quot;: &quot;65557e06-0b15-4b2e-83ab-88003af6819e&quot;
   }
-}]]></component>
+}</component>
   <component name="InvalidFacetManager">
     <ignored-facets>
       <facet id="kokoro/invalid/Python facet" />
@@ -67,47 +70,47 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Cargo.All Tests.executor": "Run",
-    "Cargo.Build `Run synth_directly_v10`.executor": "Run",
-    "Cargo.Build `Run synth_directly`.executor": "Run",
-    "Cargo.Expand kokoro::synth.executor": "Run",
-    "Cargo.Expand kokoro_tts.executor": "Run",
-    "Cargo.Publish.executor": "Run",
-    "Cargo.Run fetch_voices.executor": "Run",
-    "Cargo.Run synth_directly.executor": "Run",
-    "Cargo.Run synth_directly_v10.executor": "Run",
-    "Cargo.Run synth_directly_v11.executor": "Run",
-    "Cargo.Run synth_stream (1).executor": "Run",
-    "Cargo.Run synth_stream.executor": "Run",
-    "Cargo.Run.executor": "Run",
-    "Cargo.Test doc.executor": "Run",
-    "Cargo.Test g2p::tests.executor": "Run",
-    "Cargo.Test g2p::tests::test_g2p.executor": "Run",
-    "Cargo.Test g2p::tests::test_w.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.g2p.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "git-widget-placeholder": "master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/workspace/kokoro",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs": "true",
-    "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Cargo.All Tests.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Build `Run synth_directly_v10`.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Build `Run synth_directly`.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Expand kokoro::synth.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Expand kokoro_tts.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Publish.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run fetch_voices.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly_v10.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly_v11.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_stream (1).executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_stream.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test doc.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests::test_g2p.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests::test_w.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.g2p.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/workspace/kokoro&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
+    &quot;org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs&quot;: &quot;true&quot;,
+    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\workspace\kokoro\examples" />
@@ -118,7 +121,7 @@
       <recent name="F:\workspace\kokoro\examples" />
     </key>
   </component>
-  <component name="RunManager" selected="Cargo.Run synth_directly_v11">
+  <component name="RunManager" selected="Cargo.Run synth_stream">
     <configuration name="All Tests" type="CargoCommandRunConfiguration" factoryName="Cargo Command" focusToolWindowBeforeRun="true" temporary="true">
       <option name="buildProfileId" value="test" />
       <option name="command" value="test --workspace" />
@@ -157,6 +160,23 @@
     <configuration name="Run synth_directly_v11" type="CargoCommandRunConfiguration" factoryName="Cargo Command" focusToolWindowBeforeRun="true">
       <option name="buildProfileId" value="dev" />
       <option name="command" value="run --example synth_directly_v11" />
+      <option name="workingDirectory" value="file://$PROJECT_DIR$" />
+      <envs />
+      <option name="emulateTerminal" value="false" />
+      <option name="channel" value="DEFAULT" />
+      <option name="requiredFeatures" value="true" />
+      <option name="allFeatures" value="false" />
+      <option name="withSudo" value="false" />
+      <option name="buildTarget" value="REMOTE" />
+      <option name="backtrace" value="SHORT" />
+      <option name="isRedirectInput" value="false" />
+      <option name="redirectInputPath" value="" />
+      <method v="2">
+        <option name="CARGO.BUILD_TASK_PROVIDER" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Run synth_stream" type="CargoCommandRunConfiguration" factoryName="Cargo Command" focusToolWindowBeforeRun="true" temporary="true">
+      <option name="command" value="run --package kokoro-tts --example synth_stream" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
       <option name="emulateTerminal" value="false" />
@@ -234,12 +254,14 @@
       <item itemvalue="Cargo.Publish" />
       <item itemvalue="Cargo.Run synth_directly_v11" />
       <item itemvalue="Cargo.Test doc" />
+      <item itemvalue="Cargo.Run synth_stream" />
       <item itemvalue="Cargo.All Tests" />
       <item itemvalue="Cargo.Test g2p::tests::test_g2p" />
       <item itemvalue="Python.g2p" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Cargo.Run synth_stream" />
         <item itemvalue="Cargo.All Tests" />
         <item itemvalue="Cargo.Test g2p::tests::test_g2p" />
       </list>
@@ -309,6 +331,7 @@
       <workItem from="1752432004345" duration="1736000" />
       <workItem from="1753363184143" duration="105000" />
       <workItem from="1760154848261" duration="3357000" />
+      <workItem from="1760631338025" duration="506000" />
     </task>
     <task id="LOCAL-00001" summary="Kokoro">
       <option name="closed" value="true" />

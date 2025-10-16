@@ -39,8 +39,8 @@ async fn main() -> anyhow::Result<()> {
     )
     .await?;
 
-    let output_stream_builder = OutputStreamBuilder::from_default_device().unwrap();
-    let output_stream = output_stream_builder.open_stream().unwrap();
+    let output_stream_builder = OutputStreamBuilder::from_default_device()?;
+    let output_stream = output_stream_builder.open_stream()?;
     let stream_handle = output_stream.mixer();
     let player = Arc::new(Sink::connect_new(&stream_handle));
     let player2 = player.clone();
