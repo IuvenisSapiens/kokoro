@@ -94,8 +94,8 @@ where
             .await?;
         elapsed = t.elapsed()?;
         let (_, audio) = kokoro_output["waveform"].try_extract_tensor::<f32>()?;
-        let (_, duration) = kokoro_output["duration"].try_extract_tensor::<i64>()?;
-        let _ = dbg!(duration.len());
+        let (_, _duration) = kokoro_output["duration"].try_extract_tensor::<i64>()?;
+        // let _ = dbg!(duration.len());
         ret.extend_from_slice(audio);
     }
 
@@ -113,8 +113,8 @@ where
     S: AsRef<str>,
 {
     let phonemes = g2p(text.as_ref(), voice.is_v11_supported())?;
-    #[cfg(debug_assertions)]
-    println!("{}", phonemes);
+    // #[cfg(debug_assertions)]
+    // println!("{}", phonemes);
     match voice {
         v if v.is_v11_supported() => synth_v11(model, phonemes, pack, v.get_speed_v11()?).await,
         v if v.is_v10_supported() => synth_v10(model, phonemes, pack, v.get_speed_v10()?).await,
