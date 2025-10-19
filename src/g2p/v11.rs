@@ -154,6 +154,13 @@ const UNK: &str = "❓";
 
 static PHRASES_DICT: LazyLock<HashMap<String, String>> = LazyLock::new(|| {
     let mut map = HashMap::new();
+    let phrases = include_str!("../../dict/pinyin.dict");
+    for line in phrases.lines() {
+        let Some((k, v)) = line.trim().split_once(" ") else {
+            continue;
+        };
+        map.insert(k.to_string(), v.to_string());
+    }
     let file_path = "data/phrases.json";
     match File::open(file_path) {
         Ok(mut file) => {
