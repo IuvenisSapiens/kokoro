@@ -40,9 +40,9 @@ where
     let kokoro_output = model
         .run_async(
             inputs![
-                "tokens" => TensorRef::from_array_view(&phonemes)?,
-                "style" => TensorRef::from_array_view(&style)?,
-                "speed" => TensorRef::from_array_view(&speed)?,
+                "tokens" => TensorRef::from_array_view(phonemes.view())?,
+                "style" => TensorRef::from_array_view(style.view())?,
+                "speed" => TensorRef::from_array_view(speed.view())?,
             ],
             &options,
         )?
@@ -85,9 +85,9 @@ where
         let kokoro_output = model
             .run_async(
                 inputs![
-                    "input_ids" => TensorRef::from_array_view(&phonemes)?,
-                    "style" => TensorRef::from_array_view(&style)?,
-                    "speed" => TensorRef::from_array_view(&speed)?,
+                    "input_ids" => TensorRef::from_array_view(phonemes.view())?,
+                    "style" => TensorRef::from_array_view(style.view())?,
+                    "speed" => TensorRef::from_array_view(speed.view())?,
                 ],
                 &options,
             )?
