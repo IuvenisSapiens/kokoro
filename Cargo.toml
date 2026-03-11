@@ -18,18 +18,18 @@ chinese-number = { version = "0.7.8", default-features = false, features = [
     "chinese-to-number",
 ] }
 cmudict-fast = { version = "0.8.0", optional = true }
-futures = "0.3.31"
+futures = "0.3.32"
 jieba-rs = "0.8.1"
 log = "0.4.29"
 ndarray = "0.17.2"
 ort = { git = "https://github.com/pykeio/ort", branch = "main" }
-pin-project = "1.1.10"
+pin-project = "1.1.11"
 pinyin = "0.11.0"
-rand = "0.9.2"
+rand = "0.10.0"
 # rand = { git = "https://github.com/rust-random/rand", branch = "master" }
-regex = "1.12.2"
+regex = "1.12.3"
 serde_json = "1.0.149"
-tokio = { version = "1.49.0", features = [
+tokio = { version = "1.50.0", features = [
     "fs",
     "rt-multi-thread",
     "time",
@@ -37,9 +37,9 @@ tokio = { version = "1.49.0", features = [
 ] }
 
 [dev-dependencies]
-anyhow = "1.0.100"
-tokio = {version = "1.49.0",features = ["macros"]}
-voxudio = { version = "0.5.7",features = ["device"] }
+anyhow = "1.0.102"
+tokio = {version = "1.50.0",features = ["macros"]}
+voxudio = { version = "0.5.8",features = ["device"] }
 
 [build-dependencies]
-cc = "1.2.53"
+cc = "1.2.56"
