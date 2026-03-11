@@ -55,11 +55,6 @@ impl From<DecodeError> for KokoroError {
     }
 }
 
-impl From<OrtError> for KokoroError {
-    fn from(value: OrtError) -> Self {
-        Self::Ort(value)
-    }
-}
 
 impl From<G2PError> for KokoroError {
     fn from(value: G2PError) -> Self {
@@ -76,5 +71,19 @@ impl From<ShapeError> for KokoroError {
 impl From<SystemTimeError> for KokoroError {
     fn from(value: SystemTimeError) -> Self {
         Self::SystemTime(value)
+    }
+}
+
+// `ort::Error` is parameterized by a recovery type, and some APIs (such as the
+// session builder) return `Error<SessionBuilder>`.  Because the builder type is
+// private we cannot write a `From` impl specifically for it, but we can implement
+// a catch‑all conversion for *any* instantiation.  We convert to our existing
+// `Ort` variant by dropping the recovery value and copying the error message.
+impl<T> From<ort::Error<T>> for KokoroError {
+    fn from(value: ort::Error<T>) -> Self {
+        // `OrtError::new` is a constructor that accepts a message string; the
+        // wrapped error implements `Display`, so `to_string()` gives us something
+        // reasonable.
+        KokoroError::Ort(OrtError::new(value.to_string()))
     }
 }
