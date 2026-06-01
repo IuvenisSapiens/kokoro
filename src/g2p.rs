@@ -228,7 +228,7 @@ pub fn g2p(text: &str, use_v11: bool) -> Result<String, G2PError> {
                     result.push(' ');
                 } else {
                     for i in jieba.cut(&text, true) {
-                        result.push_str(&word2ipa_zh(i)?);
+                        result.push_str(&word2ipa_zh(i.word)?);
                         result.push(' ');
                     }
                 }
