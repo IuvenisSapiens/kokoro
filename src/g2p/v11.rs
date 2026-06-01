@@ -523,14 +523,14 @@ fn split_at_char(s: &str, mid: usize) -> (&str, &str) {
 
 fn split_word(word: &str) -> (String, String) {
     let mut word_list = JIEBA.cut_for_search(word, true);
-    word_list.sort_by_cached_key(|i| i.chars().count());
+    word_list.sort_by_cached_key(|i| i.word.chars().count());
     let first_subword = &word_list[0];
-    if let Some(0) = word.find(first_subword) {
-        let (_, second_subword) = word.split_at(first_subword.len());
-        ((*first_subword).into(), second_subword.into())
+    if let Some(0) = word.find(first_subword.word) {
+        let (_, second_subword) = word.split_at(first_subword.word.len());
+        ((*first_subword.word).into(), second_subword.into())
     } else {
-        let (second_subword, _) = word.split_at(word.len() - first_subword.len());
-        (second_subword.into(), (*first_subword).into())
+        let (second_subword, _) = word.split_at(word.len() - first_subword.word.len());
+        (second_subword.into(), (*first_subword.word).into())
     }
 }
 

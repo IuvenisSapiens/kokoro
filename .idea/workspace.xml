@@ -11,20 +11,15 @@
     </cargoProject>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="d50e30d2-73ca-469f-a511-9d9815c6b97d" name="更改" comment="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;Replace rodio with voxudio in examples and update multiple dependencies">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/CopilotChatHistory.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/kokoro.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+    <list default="true" id="d50e30d2-73ca-469f-a511-9d9815c6b97d" name="更改" comment="﻿Merge branch 'master' of https://github.com/mzdk100/kokoro&#10;# Please enter a commit message to explain why this merge is necessary,&#10;# especially if it merges an updated upstream into a topic branch.&#10;#&#10;# Lines starting with '#' will be ignored, and an empty message aborts&#10;# the commit.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Cargo.toml" beforeDir="false" afterPath="$PROJECT_DIR$/Cargo.toml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/synth_directly_v10.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/synth_directly_v10.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/synth_directly_v11.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/synth_directly_v11.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/examples/synth_stream.rs" beforeDir="false" afterPath="$PROJECT_DIR$/examples/synth_stream.rs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/error.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/error.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/g2p.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/g2p.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/g2p/v10.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/g2p/v10.rs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/g2p/v11.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/g2p/v11.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/stream.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/stream.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/synthesizer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/synthesizer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/tokenizer.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/tokenizer.rs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/transcription/zh.rs" beforeDir="false" afterPath="$PROJECT_DIR$/src/transcription/zh.rs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,48 +72,49 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Cargo.All Tests.executor": "Run",
-    "Cargo.Build `Run synth_directly_v10`.executor": "Run",
-    "Cargo.Build `Run synth_directly`.executor": "Run",
-    "Cargo.Expand kokoro::synth.executor": "Run",
-    "Cargo.Expand kokoro_tts.executor": "Run",
-    "Cargo.Publish.executor": "Run",
-    "Cargo.Run fetch_voices.executor": "Run",
-    "Cargo.Run synth_directly.executor": "Run",
-    "Cargo.Run synth_directly_v10.executor": "Run",
-    "Cargo.Run synth_directly_v11.executor": "Run",
-    "Cargo.Run synth_stream (1).executor": "Run",
-    "Cargo.Run synth_stream.executor": "Run",
-    "Cargo.Run.executor": "Run",
-    "Cargo.Test doc.executor": "Run",
-    "Cargo.Test g2p::tests.executor": "Run",
-    "Cargo.Test g2p::tests::test_g2p.executor": "Run",
-    "Cargo.Test g2p::tests::test_w.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.g2p.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.rust.reset.selective.auto.import": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "git-widget-placeholder": "正在合并 master",
-    "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "F:/workspace/kokoro",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "org.rust.cargo.project.model.PROJECT_DISCOVERY": "true",
-    "org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon": "",
-    "org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs": "true",
-    "org.rust.first.attach.projects": "true",
-    "settings.editor.selected.configurable": "preferences.keymap",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Cargo.All Tests.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Build `Run synth_directly_v10`.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Build `Run synth_directly`.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Expand kokoro::synth.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Expand kokoro_tts.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Publish.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run fetch_voices.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly_v10.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_directly_v11.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_stream (1).executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run synth_stream.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Run.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test doc.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests::test_g2p.executor&quot;: &quot;Run&quot;,
+    &quot;Cargo.Test g2p::tests::test_w.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.g2p.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.rust.reset.selective.auto.import&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;master&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;F:/workspace/kokoro&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;org.rust.cargo.project.model.PROJECT_DISCOVERY&quot;: &quot;true&quot;,
+    &quot;org.rust.cargo.project.model.impl.CargoExternalSystemProjectAware.subscribe.first.balloon&quot;: &quot;&quot;,
+    &quot;org.rust.disableDetachedFileInspectionF:/workspace/kokoro/src/synth.rs&quot;: &quot;true&quot;,
+    &quot;org.rust.first.attach.projects&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.keymap&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="F:\workspace\kokoro\examples" />
@@ -166,6 +162,7 @@
       </method>
     </configuration>
     <configuration name="Run synth_directly_v10" type="CargoCommandRunConfiguration" factoryName="Cargo Command" focusToolWindowBeforeRun="true" temporary="true">
+      <option name="buildProfileId" value="dev" />
       <option name="command" value="run --package kokoro-tts --example synth_directly_v10" />
       <option name="workingDirectory" value="file://$PROJECT_DIR$" />
       <envs />
@@ -266,6 +263,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="DEBUG_JUST_MY_CODE" value="true" />
+      <option name="RUN_TOOL" value="" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/g2p.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -279,10 +278,11 @@
       <item itemvalue="Cargo.Publish" />
       <item itemvalue="Cargo.Run synth_directly_v11" />
       <item itemvalue="Cargo.Test doc" />
+      <item itemvalue="Cargo.All Tests" />
       <item itemvalue="Cargo.Run synth_directly_v10" />
       <item itemvalue="Cargo.Run synth_stream" />
-      <item itemvalue="Cargo.All Tests" />
       <item itemvalue="Cargo.Test g2p::tests::test_g2p" />
+      <item itemvalue="Python.g2p" />
     </list>
     <recent_temporary>
       <list>
@@ -359,7 +359,10 @@
       <workItem from="1760154848261" duration="3357000" />
       <workItem from="1760631338025" duration="1454000" />
       <workItem from="1768962208227" duration="2793000" />
-      <workItem from="1768965154649" duration="296000" />
+      <workItem from="1768965154649" duration="1217000" />
+      <workItem from="1770081290677" duration="29000" />
+      <workItem from="1780280532075" duration="2190000" />
+      <workItem from="1780283295028" duration="1218000" />
     </task>
     <task id="LOCAL-00001" summary="Kokoro">
       <option name="closed" value="true" />
@@ -529,7 +532,15 @@
       <option name="project" value="LOCAL" />
       <updated>1768964701703</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;- Replace rodio with voxudio in examples and update multiple dependencies">
+      <option name="closed" value="true" />
+      <created>1768965706968</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1768965706968</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -568,7 +579,8 @@
     <MESSAGE value="chore: Bump version to 0.2.8 and update dependencies" />
     <MESSAGE value="chore: Bump version to 0.3.0 and update dependencies" />
     <MESSAGE value="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;Replace rodio with voxudio in examples and update multiple dependencies" />
-    <option name="LAST_COMMIT_MESSAGE" value="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;Replace rodio with voxudio in examples and update multiple dependencies" />
+    <MESSAGE value="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;- Replace rodio with voxudio in examples and update multiple dependencies" />
+    <option name="LAST_COMMIT_MESSAGE" value="chore: Bump version to 0.3.2 and update dependencies&#10;&#10;- Replace rodio with voxudio in examples and update multiple dependencies" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand>

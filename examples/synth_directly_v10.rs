@@ -15,7 +15,7 @@ async fn main() -> anyhow::Result<()> {
     println!("Synth took: {:?}", took);
     let mut player = AudioPlayer::new()?;
     player.play()?;
-    player.write::<24000>(&audio, 1).await?;
+    player.write::<24000, _>(&audio, 1).await?;
 
     Ok(())
 }

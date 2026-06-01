@@ -1,12 +1,14 @@
-use crate::G2PError;
-use bincode::error::DecodeError;
-use ndarray::ShapeError;
-use ort::Error as OrtError;
-use std::{
-    error::Error,
-    fmt::{Debug, Display, Formatter, Result as FmtResult},
-    io::Error as IoError,
-    time::SystemTimeError,
+use {
+    crate::G2PError,
+    bincode::error::DecodeError,
+    ndarray::ShapeError,
+    ort::Error as OrtError,
+    std::{
+        error::Error,
+        fmt::{Debug, Display, Formatter, Result as FmtResult},
+        io::Error as IoError,
+        time::SystemTimeError,
+    },
 };
 
 #[derive(Debug)]
@@ -15,7 +17,7 @@ pub enum KokoroError {
     G2P(G2PError),
     Io(IoError),
     ModelReleased,
-    Ort(OrtError),
+    Ort(String),
     Send(String),
     Shape(ShapeError),
     SystemTime(SystemTimeError),
@@ -30,9 +32,9 @@ impl Display for KokoroError {
             Self::Decode(e) => Display::fmt(e, f),
             Self::G2P(e) => Display::fmt(e, f),
             Self::Io(e) => Display::fmt(e, f),
-            Self::Ort(e) => Display::fmt(e, f),
+            Self::Ort(msg) => write!(f, "Ort({})", msg),
             Self::ModelReleased => write!(f, "ModelReleased"),
-            Self::Send(e) => Display::fmt(e, f),
+            Self::Send(msg) => write!(f, "Send({})", msg),
             Self::Shape(e) => Display::fmt(e, f),
             Self::SystemTime(e) => Display::fmt(e, f),
             Self::VoiceNotFound(name) => write!(f, "VoiceNotFound({})", name),
@@ -55,9 +57,9 @@ impl From<DecodeError> for KokoroError {
     }
 }
 
-impl From<OrtError> for KokoroError {
-    fn from(value: OrtError) -> Self {
-        Self::Ort(value)
+impl<T> From<OrtError<T>> for KokoroError {
+    fn from(value: OrtError<T>) -> Self {
+        Self::Ort(value.to_string())
     }
 }
 
