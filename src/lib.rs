@@ -8,7 +8,7 @@ mod voice;
 
 use {
     bincode::{config::standard, decode_from_slice},
-    ort::{execution_providers::CUDAExecutionProvider, session::Session},
+    ort::{ep, session::Session},
     std::{collections::HashMap, path::Path, sync::Arc, time::Duration},
     tokio::{fs::read, sync::Mutex},
 };
@@ -25,7 +25,7 @@ impl KokoroTts {
         let (voices, _) = decode_from_slice(&voices, standard())?;
 
         let model = Session::builder()?
-            .with_execution_providers([CUDAExecutionProvider::default().build()])?
+            .with_execution_providers([ep::CUDA::default().build()])?
             .commit_from_file(model_path)?;
         Ok(Self {
             model: Arc::new(model.into()),
@@ -40,7 +40,7 @@ impl KokoroTts {
         let (voices, _) = decode_from_slice(voices.as_ref(), standard())?;
 
         let model = Session::builder()?
-            .with_execution_providers([CUDAExecutionProvider::default().build()])?
+            .with_execution_providers([ep::CUDA::default().build()])?
             .commit_from_memory(model.as_ref())?;
         Ok(Self {
             model: Arc::new(model.into()),
