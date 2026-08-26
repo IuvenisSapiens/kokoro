@@ -21,10 +21,11 @@ pub struct KokoroTts {
 
 impl KokoroTts {
     pub async fn new<P: AsRef<Path>>(model_path: P, voices_path: P) -> Result<Self, KokoroError> {
+        let environment = ort::init().build()?;
         let voices = read(voices_path).await?;
         let (voices, _) = decode_from_slice(&voices, standard())?;
 
-        let model = Session::builder()?
+        let model = Session::builder(&environment)?
             .with_execution_providers([ep::CUDA::default().build()])?
             .commit_from_file(model_path)?;
         Ok(Self {
@@ -37,9 +38,10 @@ impl KokoroTts {
     where
         B: AsRef<[u8]>,
     {
+        let environment = ort::init().build()?;
         let (voices, _) = decode_from_slice(voices.as_ref(), standard())?;
 
-        let model = Session::builder()?
+        let model = Session::builder(&environment)?
             .with_execution_providers([ep::CUDA::default().build()])?
             .commit_from_memory(model.as_ref())?;
         Ok(Self {
