@@ -4,7 +4,7 @@ use {
     ort::{
         inputs,
         session::{RunOptions, Session},
-        value::TensorRef,
+        value::Tensor,
     },
     std::{
         cmp::min,
@@ -40,9 +40,9 @@ where
     let kokoro_output = model
         .run_async(
             inputs![
-                "tokens" => TensorRef::from_array_view(&phonemes)?,
-                "style" => TensorRef::from_array_view(&style)?,
-                "speed" => TensorRef::from_array_view(&speed)?,
+                "tokens" => Tensor::from_array(phonemes)?,
+                "style" => Tensor::from_array(style)?,
+                "speed" => Tensor::from_array(speed)?,
             ],
             &options,
         )?
@@ -85,9 +85,9 @@ where
         let kokoro_output = model
             .run_async(
                 inputs![
-                    "input_ids" => TensorRef::from_array_view(&phonemes)?,
-                    "style" => TensorRef::from_array_view(&style)?,
-                    "speed" => TensorRef::from_array_view(&speed)?,
+                    "input_ids" => Tensor::from_array(phonemes)?,
+                    "style" => Tensor::from_array(style)?,
+                    "speed" => Tensor::from_array(speed)?,
                 ],
                 &options,
             )?
